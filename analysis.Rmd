@@ -56,6 +56,7 @@ We'll rename some of the columns, so here is a handy table of the old column nam
 | yCordAdjusted | y_adj |
 | shotAngle | angle |
 | shotAngleAdjusted | angle_adj |
+| goal | goal |
 | goalieIdForShot | goalie_id |
 | goalieNameForShot | goalie_name |
 | shooterPlayerId | skater_id |
@@ -71,6 +72,7 @@ analysis = data.frame(x = regular_season$xCord,
 					  y_adj = regular_season$yCordAdjusted,
 					  angle = regular_season$shotAngle,
 					  angle_adj = regular_season$shotAngleAdjusted,
+					  goal = regular_season$goal,
 					  goalie_id = regular_season$goalieIdForShot,
 					  goalie_name = regular_season$goalieNameForShot,
 					  skater_id = regular_season$shooterPlayerId,
@@ -82,7 +84,36 @@ With this `analysis` dataframe, we can start looking at a proposed statistic: sh
 
 # Shots Per Goal
 
+Shots per goal is a new statistic. Initially, when I had this idea, it was only for goalies. [This article](http://sasankvishnubhatla.net/nhl-goalie-shot-analysis/) details an initial attempt at analyzing what a shot per goal means. In that initial analysis, I looked at several goalies and tried to determine if there was any significance in what a shot per goal meant. However, now, with further thought, we'll be looking at what a shot per goal means to more than just goalies.
+
 ## Goalie Aspect
+
+Let's start be looking at a few select goalies from the 2017-2018 season:
+
+1. Braden Holtby
+2. Marc-Andre Fleury
+3. Connor Hellebuyck
+4. Carey Price
+5. Andrei Vasilevskiy
+6. Robin Lehner
+7. Antti Niemi
+8. Jaroslav Halak
+9. Peter Budaj
+10. Jacob Markstrom
+
+To start, we need a function that will take a goalie's name and return all their data. So, let's write our specified subset function:
+
+```{r}
+getGoalieData <- function(data, name) {
+	subset(data, goalie_name == name)
+}
+```
+
+So, let's now start with Brayden Holtby:
+
+```{r}
+holtby = getGoalieData(analysis, "Braden Holtby")
+```
 
 ## Skater Aspect
 
