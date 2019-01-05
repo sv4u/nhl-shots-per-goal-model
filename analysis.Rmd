@@ -6,4 +6,21 @@ runtime: shiny
 output: html_document
 ---
 
-merp
+```{r, echo = FALSE}
+rm(list = ls())
+
+seed = 15224
+set.seed(seed)
+```
+
+In the NHL, goalies are arguably one of the most teammembers. Most deep postseason runs rely on consistent goalie play. However, being able to compare goalies tends to be difficult, since consistency is extremely hard for a goalie. Few goalies have been consistent their entire career. Of the modern day goalies, very few exemplify extreme consistency: Henrik Lundqvist, Marc-Andre Fleury, Roberto Luongo and Jonathan Quick to name a few.
+
+In this document, I'll be detailing an analysis and seeing how it pertains to consistency. The data used has been taken from [MoneyPuck](moneypuck.com).
+
+So, let's load in our data:
+
+```{r}
+data2017 = read.csv("data/2017.csv")
+```
+
+We'll be starting with the 2017-2018 season. Since we have an extremely large amount of data, we need to clean it up.
