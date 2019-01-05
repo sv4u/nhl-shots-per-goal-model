@@ -17,10 +17,77 @@ In the NHL, goalies are arguably one of the most teammembers. Most deep postseas
 
 In this document, I'll be detailing an analysis and seeing how it pertains to consistency. The data used has been taken from [MoneyPuck](moneypuck.com).
 
+# Data Formatting
+
 So, let's load in our data:
 
 ```{r}
-data2017 = read.csv("data/2017.csv")
+data_2017 = read.csv("data/2017.csv")
 ```
 
-We'll be starting with the 2017-2018 season. Since we have an extremely large amount of data, we need to clean it up.
+We'll be starting with the 2017-2018 season. Since we have an extremely large amount of data, we need to clean it up. We'll only be looking at regular season games, initially, so we can start by subsetting our data on that.
+
+```{r}
+regular_season = subset(data_2017, isPlayoffGame == 0)
+```
+
+Some important columns we need to keep are:
+
+* xCord
+* yCord
+* xCordAdjusted
+* yCordAdjusted
+* shotAngle
+* shotAngleAdjusted
+* shotDistance
+* playerPositionThatDidEvent
+* goalieIdForShot
+* goalieNameForShot
+* shooterPlayerId
+* shooterName
+
+We'll rename some of the columns, so here is a handy table of the old column names and the new column names.
+
+| Old Column Name | New Column Name |
+| --------------- | --------------- |
+| xCord | x |
+| yCord | y |
+| xCordAdjusted | x_adj |
+| yCordAdjusted | y_adj |
+| shotAngle | angle |
+| shotAngleAdjusted | angle_adj |
+| goalieIdForShot | goalie_id |
+| goalieNameForShot | goalie_name |
+| shooterPlayerId | skater_id |
+| shooterName | skater_name |
+| playerPositionThatDidEvent | pos |
+
+Now, let's create a new dataframe with just those columns.
+
+```{r}
+analysis = data.frame(x = regular_season$xCord,
+					  y = regular_season$yCord,
+					  x_adj = regular_season$xCordAdjusted,
+					  y_adj = regular_season$yCordAdjusted,
+					  angle = regular_season$shotAngle,
+					  angle_adj = regular_season$shotAngleAdjusted,
+					  goalie_id = regular_season$goalieIdForShot,
+					  goalie_name = regular_season$goalieNameForShot,
+					  skater_id = regular_season$shooterPlayerId,
+					  skater_name = regular_season$shooterName,
+					  pos = regular_season$playerPositionThatDidEvent)
+```
+
+With this `analysis` dataframe, we can start looking at a proposed statistic: shots per goal.
+
+# Shots Per Goal
+
+## Goalie Aspect
+
+## Skater Aspect
+
+## Positional Aspect
+
+## Locational Aspect
+
+# Visualizations
