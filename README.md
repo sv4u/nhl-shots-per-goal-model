@@ -9,8 +9,8 @@ There will be more updates to this as I continue to work on it.
 ## To Do List
 
 - [ ] Goalie Analysis
-	- [ ] Pick 10 goalies
-	- [ ] Write functions to subset their data
+	- [x] Pick 10 goalies
+	- [x] Write functions to subset their data
 	- [ ] Write functions to calculate their spg
 	- [ ] If possible, calculate spg for the following: locations, games, season
 - [ ] Skater Analysis

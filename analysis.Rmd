@@ -115,6 +115,26 @@ So, let's now start with Brayden Holtby:
 holtby = getGoalieData(analysis, "Braden Holtby")
 ```
 
+With this data, we can now calculate a few shot per goal stats. Let's start with the most basic: shots per goal for the entire season.
+
+```{r}
+spg_season = function(data) {
+	total_shots = length(data$goal)
+	temp = subset(data, goal == 1)
+	total_goals = length(temp$goal)
+	total_shots / total_goals
+}
+```
+
+Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
+
+```{r}
+holtby_spg_season = spg_season(holtby)
+holtby_spg_season
+```
+
+We see that Holtby gives up one goal per 15 or so shots. We can calculate the season shots per goal for each goaltender now.
+
 ## Skater Aspect
 
 ## Positional Aspect
