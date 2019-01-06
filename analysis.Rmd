@@ -1,11 +1,11 @@
 ---
 title: "NHL Shots per Goal Model"
 author: "Sasank Vishnubhatla"
-runtime: shiny
 output:
   html_document:
     theme: simplex
     df_print: paged
+  github_document: default
 ---
 
 ```{r, echo = FALSE}

@@ -6,6 +6,10 @@ In all seriousness, this is a project on an idea I've had for a while.
 
 There will be more updates to this as I continue to work on it.
 
+## Updates
+
+1. (1/6/19) Functioning website via GitHub to show the contents of the R Markdown file. Please go here: ()
+
 ## To Do List
 
 - [ ] Goalie Analysis
