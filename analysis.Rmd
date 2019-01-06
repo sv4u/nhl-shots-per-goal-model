@@ -11,6 +11,8 @@ rm(list = ls())
 
 seed = 15224
 set.seed(seed)
+
+library(ggplot2)
 ```
 
 In the NHL, goalies are arguably one of the most teammembers. Most deep postseason runs rely on consistent goalie play. However, being able to compare goalies tends to be difficult, since consistency is extremely hard for a goalie. Few goalies have been consistent their entire career. Of the modern day goalies, very few exemplify extreme consistency: Henrik Lundqvist, Marc-Andre Fleury, Roberto Luongo and Jonathan Quick to name a few.
@@ -104,7 +106,7 @@ Let's start be looking at a few select goalies from the 2017-2018 season:
 To start, we need a function that will take a goalie's name and return all their data. So, let's write our specified subset function:
 
 ```{r}
-getGoalieData <- function(data, name) {
+get_goalie_data <- function(data, name) {
 	subset(data, goalie_name == name)
 }
 ```
@@ -112,8 +114,10 @@ getGoalieData <- function(data, name) {
 So, let's now start with Brayden Holtby:
 
 ```{r}
-holtby = getGoalieData(analysis, "Braden Holtby")
+holtby = get_goalie_data(analysis, "Braden Holtby")
 ```
+
+### Shots per Goals for a Season
 
 With this data, we can now calculate a few shot per goal stats. Let's start with the most basic: shots per goal for the entire season.
 
@@ -134,6 +138,79 @@ holtby_spg_season
 ```
 
 We see that Holtby gives up one goal per 15 or so shots. We can calculate the season shots per goal for each goaltender now.
+
+```{r}
+fleury = get_goalie_data(analysis, "Marc-Andre Fleury")
+fleury_spg_season = spg_season(fleury)
+
+hellebuyck = get_goalie_data(analysis, "Connor Hellebuyck")
+hellebuyck_spg_season = spg_season(hellebuyck)
+
+price = get_goalie_data(analysis, "Carey Price")
+price_spg_season = spg_season(price)
+
+vasilevskiy = get_goalie_data(analysis, "Andrei Vasilevskiy")
+vasilevskiy_spg_season = spg_season(vasilevskiy)
+
+lehner = get_goalie_data(analysis, "Robin Lehner")
+lehner_spg_season = spg_season(lehner)
+
+niemi = get_goalie_data(analysis, "Antti Niemi")
+niemi_spg_season = spg_season(niemi)
+
+halak = get_goalie_data(analysis, "Jaroslav Halak")
+halak_spg_season = spg_season(halak)
+
+budaj = get_goalie_data(analysis, "Peter Budaj")
+budaj_spg_season = spg_season(budaj)
+
+markstrom = get_goalie_data(analysis, "Jacob Markstrom")
+markstrom_spg_season = spg_season(markstrom)
+```
+
+With each of these shots per goal calculations, we can begin to delve deeper into what a shot per goal (`spg`) means for a goalie.
+
+#### A Mathematical Aside
+
+Ideally, during a hockey game, a goalie would like to have a shutout. A shutout, the best goalie performance possible, would equate to an infinite `spg`. Now, let's continue this hypothetical exercise. Let us say that our goalie faces a total of 30 shots per game, a figure that now seems quite average in the NHL. With a shutout, the `spg` is infinite. With one goal allowed, the `spg` will drop down to 30. With another goal allowed, the `spg` drops to 15. Here is a table which depicts the decay of `spg` as goals are allowed for a theoretical 30 shot game:
+
+| Goals Allowed | Shots per Game (30 shots) |
+| ------------- | -------------- |
+| 0 | infinite |
+| 1 | 30 |
+| 2 | 15 |
+| 3 | 10 |
+| 4 | 7.5 |
+| 5 | 6 |
+| 6 | 5 |
+
+If one were to plot this trend, it would look like this:
+
+```{r, echo=FALSE}
+goals = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+spg = 30 / goals
+spg_decay = data.frame(x = goals, y = spg)
+avg = mean(spg_decay$y)
+plot = ggplot(spg_decay, aes(x, y)) +
+	geom_area(fill = "lightblue") +
+	geom_hline(aes(yintercept = avg), color = "blue") +
+	geom_text(aes(1, avg, label = "Average spg", hjust = -1, vjust = -1)) +
+	labs(title = "Shots per Goal Decay", x = "Goals", y = "Shots per Goal") +
+	theme_minimal()
+plot
+```
+
+Mathematically speaking, we are able to formulaically determine the equation of this curve. We see that this curve is:
+
+$$spg(shots = 30, goals) = \frac{shots}{goals} = \frac{30}{goals}$$
+
+Therefore, whenever we take the limit to determine the lower bound of this function, we see that the lowest possible `spg` is:
+
+$$\lim_{goals \to \infty} spg(shots = 30, goals) = \lim_{goals \to \inf} \frac{30}{goals} = 0$$
+
+Therefore, we now know that the lowest possible `spg` is 0.
+
+### Understanding Shots Per Goal
 
 ## Skater Aspect
 
