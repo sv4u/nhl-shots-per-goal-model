@@ -3,7 +3,10 @@ title: "NHL Shots per Goal Model"
 author: "Sasank Vishnubhatla"
 date: "January 4, 2019"
 runtime: shiny
-output: html_document
+output:
+  html_document:
+    number_sections: true
+    theme: journal
 ---
 
 ```{r, echo = FALSE}
@@ -134,10 +137,9 @@ Now with this function, let's calculate the total shots per goal for the 2017-20
 
 ```{r}
 holtby_spg_season = spg_season(holtby)
-holtby_spg_season
 ```
 
-We see that Holtby gives up one goal per 15 or so shots. We can calculate the season shots per goal for each goaltender now.
+We see that Holtby gives up one goal per `r holtby_spg_season` shots. We can calculate the season shots per goal for each goaltender now.
 
 ```{r}
 fleury = get_goalie_data(analysis, "Marc-Andre Fleury")
@@ -167,6 +169,20 @@ budaj_spg_season = spg_season(budaj)
 markstrom = get_goalie_data(analysis, "Jacob Markstrom")
 markstrom_spg_season = spg_season(markstrom)
 ```
+
+Let's take a look at what the results are:
+
+| Goalie | Shots per Goal |
+| ------ | -------------- |
+| Fleury | `r fleury_spg_season` |
+| Hellebuyck | `r hellebuyck_spg_season` |
+| Price | `r price_spg_season` |
+| Vasilevskiy | `r vasilevskiy_spg_season` |
+| Lehner | `r lehner_spg_season` |
+| Niemi | `r niemi_spg_season` |
+| Halak | `r halak_spg_season` |
+| Budaj | `r budaj_spg_season` |
+| Markstrom | `r markstrom_spg_season` |
 
 With each of these shots per goal calculations, we can begin to delve deeper into what a shot per goal (SPG) means for a goalie.
 
