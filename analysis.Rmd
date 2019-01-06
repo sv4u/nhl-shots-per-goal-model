@@ -1,12 +1,11 @@
 ---
 title: "NHL Shots per Goal Model"
 author: "Sasank Vishnubhatla"
-date: "January 4, 2019"
 runtime: shiny
 output:
   html_document:
-    number_sections: true
-    theme: cosmo
+    theme: simplex
+    df_print: paged
 ---
 
 ```{r, echo = FALSE}
@@ -92,7 +91,7 @@ analysis = data.frame(x = regular_season$xCord,
 
 With this `analysis` dataframe, we can start looking at a proposed statistic: shots per goal.
 
-# Shots Per Goal
+# Shots Per Goal {.tabset .tabset-fade}
 
 Shots per goal is a new statistic. Initially, when I had this idea, it was only for goalies. [This article](http://sasankvishnubhatla.net/nhl-goalie-shot-analysis/) details an initial attempt at analyzing what a shot per goal means. In that initial analysis, I looked at several goalies and tried to determine if there was any significance in what a shot per goal meant. However, now, with further thought, we'll be looking at what a shot per goal means to more than just goalies.
 
@@ -134,9 +133,15 @@ calculate_spg = function(data) {
 	total_shots = length(data$goal)
 	temp = subset(data, goal == 1)
 	total_goals = length(temp$goal)
-	total_shots / total_goals
+	if (total_goals == 0) {
+		100
+	} else {
+		total_shots / total_goals
+	}
 }
 ```
+
+Note that if a goalie has a shutout, the SPG will be 100. This is due to R using Inf and not throwing an error.
 
 Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
 
@@ -322,20 +327,40 @@ plot_spg_game = function (spg_game, primary, secondary, name) {
 		theme_minimal()
 	plot
 }
-holtby_game_trend = data.frame(x = c(1:length(holtby_spg_games)),
-							   y = holtby_spg_games)
-plot = ggplot(holtby_game_trend, aes(x, y)) +
-	geom_point(color = "#041E42") +
-	geom_smooth(method = "lm", color = "#C8102E", fill = "#C8102E") +
-	labs(title = "Braden Holtby SPG by Game", x = "Game Played", y = "SPG") +
-	theme_minimal()
+plot = plot_spg_game(holtby_spg_games, "#041E42", "#C8102E", "Braden Holtby")
 plot
 ```
+
+In this graph, we see that each point is Holtby's SPG for a specific game. The line is a linear model which shows that over the season, Holtby seemed to follow a decreasing linear trend.
+
+Let's now look at someone who he faced in the Stanley Cup finals: Marc-Andre Fleury
+
+```{r, echo=FALSE}
+plot = plot_spg_game(fleury_spg_games,
+					 "#B4975A",
+					 "#333F42",
+					 "Marc-Andre Fleury")
+plot
+```
+
+Fleury's trend seems to be more linear, unlike Holtby. However, Fleury had 5 shutouts, which are seen as 100 instead as Inf. This leads to there being some minor skewing in the linear model.
+
+A final player I'd like to look at is Carey Price. Price is supposed to be a Vezina caliber goaltender every year. However, injuries have set him back. Let's see how his trend is for the 2017-2018 season.
+
+```{r}
+plot = plot_spg_game(price_spg_games,
+					 "#AF1E2D",
+					 "#192168",
+					 "Carey Price")
+plot
+```
+
+Similar to Holtby, Price has a decreasing trend in his SPG. However, Price's decreasing trend is less than Holtby's.
+
+### Shots per Goal from Specific Locations
 
 ## Skater Aspect
 
 ## Positional Aspect
 
 ## Locational Aspect
-
-# Visualizations
