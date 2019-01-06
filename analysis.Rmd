@@ -2,11 +2,13 @@
 title: "NHL Shots per Goal Model"
 author: "Sasank Vishnubhatla"
 output:
-  md_document:
-    variant: markdown_github
   html_document:
+    runtime: shiny
     theme: simplex
     df_table: paged
+    dev: 'svg'
+  pdf_document: default
+  github_document: default
 ---
 
 ```{r, echo = FALSE}
