@@ -346,7 +346,7 @@ plot = plot_spg_game(fleury_spg_games,
 plot
 ```
 
-Fleury's trend seems to be more linear, unlike Holtby. However, Fleury had 5 shutouts, which are seen as 100 instead as Inf. This leads to there being some minor skewing in the linear model.
+Fleury's trend seems to be more stable, unlike Holtby. However, Fleury had 5 shutouts, which are seen as 100 instead as Inf. This leads to there being some minor skewing in the linear model.
 
 A final player I'd like to look at is Carey Price. Price is supposed to be a Vezina caliber goaltender every year. However, injuries have set him back. Let's see how his trend is for the 2017-2018 season.
 
