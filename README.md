@@ -8,7 +8,7 @@ There will be more updates to this as I continue to work on it.
 
 ## Updates
 
-1. (1/6/19) Functioning website via GitHub to show the contents of the R Markdown file. It will be in the pdf, [analysis.pdf](analysis.pdf)
+1. (1/6/19) Functioning website via GitHub to show the contents of the R Markdown file. It will be in the pdf, [analysis.pdf](docs/analysis.pdf)
 
 ## To Do List
 
