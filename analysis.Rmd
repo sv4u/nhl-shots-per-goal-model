@@ -5,10 +5,10 @@ output:
   html_document:
     runtime: shiny
     theme: simplex
-    df_table: paged
+    df_print: paged
     dev: 'svg'
-  pdf_document: default
-  github_document: default
+  pdf_document:
+    df_print: kable
 ---
 
 ```{r, echo = FALSE}
