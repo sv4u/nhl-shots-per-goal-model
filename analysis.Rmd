@@ -168,13 +168,13 @@ markstrom = get_goalie_data(analysis, "Jacob Markstrom")
 markstrom_spg_season = spg_season(markstrom)
 ```
 
-With each of these shots per goal calculations, we can begin to delve deeper into what a shot per goal (`spg`) means for a goalie.
+With each of these shots per goal calculations, we can begin to delve deeper into what a shot per goal (SPG) means for a goalie.
 
 #### A Mathematical Aside
 
-Ideally, during a hockey game, a goalie would like to have a shutout. A shutout, the best goalie performance possible, would equate to an infinite `spg`. Now, let's continue this hypothetical exercise. Let us say that our goalie faces a total of 30 shots per game, a figure that now seems quite average in the NHL. With a shutout, the `spg` is infinite. With one goal allowed, the `spg` will drop down to 30. With another goal allowed, the `spg` drops to 15. Here is a table which depicts the decay of `spg` as goals are allowed for a theoretical 30 shot game:
+Ideally, during a hockey game, a goalie would like to have a shutout. A shutout, the best goalie performance possible, would equate to an infinite SPG Now, let's continue this hypothetical exercise. Let us say that our goalie faces a total of 30 shots per game, a figure that now seems quite average in the NHL. With a shutout, the SPG is infinite. With one goal allowed, the SPG will drop down to 30. With another goal allowed, the spg drops to 15. Here is a table which depicts the decay of SPG as goals are allowed for a theoretical 30 shot game:
 
-| Goals Allowed | Shots per Game (30 shots) |
+| Goals Allowed | Shots per Goal (30 shots) |
 | ------------- | -------------- |
 | 0 | infinite |
 | 1 | 30 |
@@ -204,13 +204,38 @@ Mathematically speaking, we are able to formulaically determine the equation of 
 
 $$spg(shots = 30, goals) = \frac{shots}{goals} = \frac{30}{goals}$$
 
-Therefore, whenever we take the limit to determine the lower bound of this function, we see that the lowest possible `spg` is:
+Therefore, whenever we take the limit to determine the lower bound of this function, we see that the lowest possible SPG is:
 
 $$\lim_{goals \to \infty} spg(shots = 30, goals) = \lim_{goals \to \inf} \frac{30}{goals} = 0$$
 
-Therefore, we now know that the lowest possible `spg` is 0.
+Therefore, we now know that the lowest possible SPG is 0.
 
 ### Understanding Shots Per Goal
+
+In the NHL, a goalie (and a team ideally) strives to lower his goals against average (GAA). However, given the nature of GAA, it can be misleading. Similar to a pitchers ERA, GAA is a general stat. It does not give insight into his performance.
+
+For example, a goalie could have a GAA of 3.0 on a given night, but saved 45 or 48 shots. A GAA of 3.0 is considered not very good in the current NHL, but the goalie played exceptionally well given that he had a 93.75% save percentage. Whenever GAA is paired with save percentage, we are given a better picture. However, this picture is still slightly misleading.
+
+Now, let's look at the other extreme; a goalie has a GAA of 1.0 for a game, but only faced 20 shots. With this, we are looking at a GAA of 1.0 and a save percentage of 90.00%. The GAA says the goalie is elite, but the save percentage says the goalie is a benchwarmer. Pairing GAA and save percentage will only take an analysis so far, but there is more to look at.
+
+If we add SPG into the picture, we might be able to gain more insight into the goalie's performance. Let's revist our goalie with a 3.00 GAA and 93.75% save percentage. Since he faced a 48 shots and gave up 3 goals, he has a SPG of 16.0. Our goalie on average will save 16 shots before letting up a goal. On a good day, that means a period or two of shutout hockey. On a bad day, they let up a goal per period.
+
+Now, let's revisit our GAA of 1.0 and save percentage of 90.00% goalie. His SPG, given he faced 20 shots and gave up 2 goals, is 10.0. So, every 10 shots, we expect a goal to be given up. Let me make a table to help understand the differences between the two goalies.
+
+| Goalie | GAA | Save Percentage | Shots Per Goal | Shots Faced |
+| ------ | --- | --------------- | -------------- | ----------- |
+| A | 3.00 | 93.75% | 16.0 | 48 |
+| B | 1.00 | 90.00% | 10.0 | 20 |
+
+From here, we can determine which goalie is better. Categorically, goalie A wins as he has a better save percentage and SPG. Though goalie B has a better GAA, we know through SPG and save percentage, that goalie B will give up more goals given a higher shot volume.
+
+### Drawbacks of Shots per Goal
+
+An immediate drawback of SPG is that is does not take the defense into account. However, both GAA and save percentage, also have this drawback. Taking defense out of the picture in a statistic may be not as useful as assessing the goalie by himself takes a large chunk of a team out of the statistic. Both GAA and save percentage reflect on the defensive play of team since a goalie can only do so much. A perfect example of this is Cam Talbot in 2016-2017. Cam Talbot started **73** games for the Edmonton Oilers and put up a 2.39 GAA and 91.9% save percentage (numbers taken from [Hockey Reference](hockey-reference.com)). These numbers are not spectacular, but it does reflect on the team's defense: it was terrible. His SPG that season was 12.38. This SPG additionally reflects on his team's defensive play.
+
+Additionally, SPG does not account for shot attempts, only shots on goal. There is a significant difference between the two, as a defense can be excellent at shot blocking. However, their goalie may not be as good, so the defense is forced to block shots more. This may lead to a slightly inflated SPG. In the future, more research can be done on this, leading to a new statistic: shot attempts per goal (SaPG). Currently, I do not have the data to calculate this. However, I do suspect that SaPG can be used not only as a metric to determine the effectiveness of a goalie, but also determine how good a defense is.
+
+### Determining Shots Per Goal for a Single Game
 
 ## Skater Aspect
 
