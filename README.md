@@ -32,4 +32,3 @@ There will be more updates to this as I continue to work on it.
 	- [ ] Write functions to subset data in those locations
 	- [ ] Calculate spg: season
 	- [ ] Try to make predictive model
-- [ ] Data Visualizations
