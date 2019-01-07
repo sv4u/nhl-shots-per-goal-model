@@ -1,6 +1,7 @@
 ---
 title: "NHL Shots per Goal Model"
 author: "Sasank Vishnubhatla"
+date: "January 4th, 2019"
 output:
   html_document:
     runtime: shiny
@@ -78,18 +79,18 @@ Now, let's create a new dataframe with just those columns.
 
 ```{r}
 analysis_2017 = data.frame(x = regular_season_2017$xCord,
-					  y = regular_season_2017$yCord,
-					  x_adj = regular_season_2017$xCordAdjusted,
-					  y_adj = regular_season_2017$yCordAdjusted,
-					  angle = regular_season_2017$shotAngle,
-					  angle_adj = regular_season_2017$shotAngleAdjusted,
-					  goal = regular_season_2017$goal,
-					  goalie_id = regular_season_2017$goalieIdForShot,
-					  goalie_name = regular_season_2017$goalieNameForShot,
-					  skater_id = regular_season_2017$shooterPlayerId,
-					  skater_name = regular_season_2017$shooterName,
-					  pos = regular_season_2017$playerPositionThatDidEvent,
-					  game = regular_season_2017$game_id)
+						   y = regular_season_2017$yCord,
+						   x_adj = regular_season_2017$xCordAdjusted,
+						   y_adj = regular_season_2017$yCordAdjusted,
+						   angle = regular_season_2017$shotAngle,
+						   angle_adj = regular_season_2017$shotAngleAdjusted,
+						   goal = regular_season_2017$goal,
+						   goalie_id = regular_season_2017$goalieIdForShot,
+						   goalie_name = regular_season_2017$goalieNameForShot,
+						   skater_id = regular_season_2017$shooterPlayerId,
+						   skater_name = regular_season_2017$shooterName,
+						   pos = regular_season_2017$playerPositionThatDidEvent,
+						   game = regular_season_2017$game_id)
 ```
 
 With this `analysis_2017` dataframe, we can start looking at a proposed statistic: shots per goal.
@@ -321,8 +322,7 @@ Let's take a look at these goalies: Holtby, Fleury, Price, Lehner, and Markstrom
 ```{r, echo=FALSE}
 plot_spg_game = function (spg_game, primary, secondary, name) {
 	display = paste(name, "SPG By Game", sep = " ")
-	frame = data.frame(x = c(1:length(spg_game)),
-					   y = spg_game)
+	frame = data.frame(x = c(1:length(spg_game)), y = spg_game)
 	plot = ggplot(frame, aes(x, y)) +
 		geom_point(color = primary) +
 		geom_smooth(method = "lm", color = secondary, fill = secondary) +
@@ -339,10 +339,7 @@ In this graph, we see that each point is Holtby's SPG for a specific game. The l
 Let's now look at someone who he faced in the Stanley Cup finals: Marc-Andre Fleury
 
 ```{r, echo=FALSE}
-plot = plot_spg_game(fleury_spg_games,
-					 "#B4975A",
-					 "#333F42",
-					 "Marc-Andre Fleury")
+plot = plot_spg_game(fleury_spg_games, "#B4975A", "#333F42", "Marc-Andre Fleury")
 plot
 ```
 
@@ -515,7 +512,58 @@ murray_2016 = get_goalie_data(analysis_2016, "Matt Murray")
 murray_2017 = get_goalie_data(analysis_2017, "Matt Murray")
 ```
 
-With this data, we can select Murray's data and start looking at his trends.
+With this data, we can select Murray's data and start looking at his trends. Let's get all his import SPG data now.
+
+```{r}
+murray_spg_2016 = calculate_spg(murray_2016)
+murray_spg_2017 = calculate_spg(murray_2017)
+
+murray_spg_games_2016 = get_spg_games(murray_2016)
+murray_spg_games_2017 = get_spg_games(murray_2017)
+
+murray_low_spg_2016 = low_danger_spg(murray_2016)
+murray_medium_spg_2016 = medium_danger_spg(murray_2016)
+murray_high_spg_2016 = high_danger_spg(murray_2016)
+
+murray_low_spg_2017 = low_danger_spg(murray_2017)
+murray_medium_spg_2017 = medium_danger_spg(murray_2017)
+murray_high_spg_2017 = high_danger_spg(murray_2017)
+```
+
+With all these calculations, we can start to look at some trends. Here is a table so we can inspect the data:
+
+| Season | SPG | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | --- | -------------- | ----------------- | --- |
+| 2016 | `r murray_spg_2016` | `r murray_low_spg_2016` | `r murray_medium_spg_2016` | `r murray_high_spg_2017` |
+| 2017 | `r murray_spg_2017` | `r murray_low_spg_2017` | `r murray_medium_spg_2017` | `r murray_high_spg_2017` |
+
+From this, we can see that Murray has always been strong against low danger shots. However, there is a downward trend in his total SPG as well as medium danger SPG shots. With a difference of `r murray_medium_spg_2016 - murray_medium_spg_2017`, there should be some concern for Murray.
+
+Let's now take a look at his trends for each game he played for both season. First, we'll look at 2016-2017.
+
+```{r, echo=FALSE}
+plot = plot_spg_game(murray_spg_games_2016,
+					 "#000000",
+					 "#FCB514",
+					 "Matt Murray (2016)")
+plot
+```
+
+We can see that Murray followed most trends that other goalies did: a decreasing trend. However, I believe this trend is slightly skewed as Murray did have 5 shutouts and therefore 5 outliers in the data. That being said, The shutouts are pretty evenly spaced in the data, skewing the data up completely. This does not discount the fact that Murray performed exceptionally well that season.
+
+Let's now take a look at 2017-2018.
+
+```{r, echo=FALSE}
+plot = plot_spg_game(murray_spg_games_2017,
+					 "#000000",
+					 "#FCB514",
+					 "Matt Murray (2017)")
+plot
+```
+
+Unlike his 2016-2017 season, Murray struggled for stretches, but then had elite play for othe stretches. With 3 shutouts, the data is slightly skewed, but not by that much. Murray in 2017 almost had a stable neutral trend, but still tailed off near the end of the season.
+
+Murray's change in performance can be attributed to multiple factors. First, personal issues during the 2017-2018 season. Second, injuries plagued him the entire season. Finally, a _theoretical_ sophomore slump.
 
 ### Casey DeSmith
 
