@@ -362,6 +362,55 @@ Similar to Holtby, Price has a decreasing trend in his SPG. However, Price's dec
 
 ### Shots per Goal from Specific Locations
 
+In my initial attempt at analyzing shots per goal, I determined three danger zones in the attacking end: low, medium, and high. In the goalie dataframe, we've included x and y coordinates since these zones are in specific locations. With landmarks on the ice, like the slot and circles, I determined which were low, medium, and high danger. Here is was I determined:
+
+| Position | X Coordinate (Adj) | Y Coordinate (Adj) | Danger Level |
+| -------- | ------------------ | ------------------ | ------------ |
+| Slot | From 40 to 90 | From -22 to 22 | High |
+| Left Circle | From 32 to 82 | From -43 to 7 | Medium |
+| Right Circle | From 32 to 82 | From 7 to 43 | Medium |
+| Point | From 20 to 35 | From -43 to 43 | Low |
+
+I do know that this is not as accurate as it could be. There is significantly more areas that can be studied, such has high and low slot, net front, and the half-walls. That being said, this is not meant to be an in-depth analysis; instead I am looking for generic trends.
+
+So, without further ado, let's start by writing a few subsetting functions to help us look at the trends in shots per goal.
+
+```{r}
+get_low_danger = function(data) {
+	subset(data,
+		   x_adj >= 20 & x_adj <= 35 & y_adj <= 43 & y_adj >= -43)
+}
+
+get_medium_danger = function(data) {
+	subset(data,
+		   x_adj >= 32 & x_adj <= 82 &
+		   	((y_adj >= 7 & y_adj <= 43) | (y_adj <= -7 & y_adj >= -43)))
+}
+
+get_high_danger = function(data) {
+	subset(data,
+		   x_adj >= 40 & x <= 90 & y_adj >= -22 & y_adj <= 22)
+}
+```
+
+With these functions, we can start looking at how a goalie performs when a shot is taken from a certain location. Let's start by writing a few more functions which will calculate the SPG for a certain danger level.
+
+```{r}
+low_danger_spg = function(data) {
+	calculate_spg(get_low_danger(data))
+}
+
+medium_danger_spg = function(data) {
+	calculate_spg(get_medium_danger(data))
+}
+
+high_danger_spg = function(data) {
+	calculate_spg(get_high_danger(data))
+}
+```
+
+With these functions, let's compute the SPG for each danger level for each goalie now.
+
 ## Skater Aspect
 
 ## Positional Aspect
