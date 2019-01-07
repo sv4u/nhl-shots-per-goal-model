@@ -10,6 +10,7 @@ output:
     dev: 'svg'
   pdf_document:
     df_print: kable
+    toc: true
 ---
 
 ```{r, echo = FALSE}
@@ -22,6 +23,10 @@ library(ggplot2)
 library(purrr)
 library(shiny)
 ```
+
+Last Update: January 7th, 2019
+
+GitHub Repo: [sv4u/nhl-shots-per-goal-model](https://github.com/sv4u/nhl-shots-per-goal-model)
 
 In the NHL, goalies are arguably one of the most teammembers. Most deep postseason runs rely on consistent goalie play. However, being able to compare goalies tends to be difficult, since consistency is extremely hard for a goalie. Few goalies have been consistent their entire career. Of the modern day goalies, very few exemplify extreme consistency: Henrik Lundqvist, Marc-Andre Fleury, Roberto Luongo and Jonathan Quick to name a few.
 
@@ -146,6 +151,10 @@ calculate_spg = function(data) {
 ```
 
 Note that if a goalie has a shutout, the SPG will be 200. This is due to R using Inf and not throwing an error.
+
+#### Discussion: The Shutout
+
+When calculating SPG, we must decided what should be awarded for a shutout. R handles a division by 0 as infinity, as it should. However, this does not bode well with visualizations. Therefore, I have set the value to 200. In my research and sifting through data, I have noticed that no goalie has had any SPG above 175. Therefore, it would make sense to set a shutout as something above 200. However, in the future, I will be looking to keep a shutout as infinity so it tell the true story about the goalie.
 
 Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
 
@@ -565,6 +574,129 @@ Unlike his 2016-2017 season, Murray struggled for stretches, but then had elite 
 
 Murray's change in performance can be attributed to multiple factors. First, personal issues during the 2017-2018 season. Second, injuries plagued him the entire season. Finally, a _theoretical_ sophomore slump.
 
+Let's now start looking at 2018-2019 data. This data, is incomplete as the season isn't over.
+
+Note: this data contains all shots up to 1/7/19
+
+```{r}
+data_2018 = read.csv("data/2018.csv")
+regular_season_2018 = subset(data_2018, isPlayoffGame == 0)
+
+analysis_2018 = data.frame(x = regular_season_2018$xCord,
+                           y = regular_season_2018$yCord,
+                           x_adj = regular_season_2018$xCordAdjusted,
+                           y_adj = regular_season_2018$yCordAdjusted,
+                           angle = regular_season_2018$shotAngle,
+                           angle_adj = regular_season_2018$shotAngleAdjusted,
+                           goal = regular_season_2018$goal,
+                           goalie_id = regular_season_2018$goalieIdForShot,
+                           goalie_name = regular_season_2018$goalieNameForShot,
+                           skater_id = regular_season_2018$shooterPlayerId,
+                           skater_name = regular_season_2018$shooterName,
+                           pos = regular_season_2018$playerPositionThatDidEvent,
+                           game = regular_season_2018$game_id)
+```
+
+With `analysis_2018`, we can start looking at Murray's data.
+
+```{r}
+murray_2018 = get_goalie_data(analysis_2018, "Matt Murray")
+
+murray_spg_2018 = calculate_spg(murray_2018)
+murray_spg_games_2018 = get_spg_games(murray_2018)
+
+murray_low_spg_2018 = low_danger_spg(murray_2018)
+murray_medium_spg_2018 = medium_danger_spg(murray_2018)
+murray_high_spg_2018 = high_danger_spg(murray_2018)
+```
+
+Let's compare all of his data together now.
+
+| Season | SPG | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | --- | -------------- | ----------------- | --- |
+| 2016 | `r murray_spg_2016` | `r murray_low_spg_2016` | `r murray_medium_spg_2016` | `r murray_high_spg_2017` |
+| 2017 | `r murray_spg_2017` | `r murray_low_spg_2017` | `r murray_medium_spg_2017` | `r murray_high_spg_2017` |
+| 2018 | `r murray_spg_2018` | `r murray_low_spg_2018` | `r murray_medium_spg_2018` | `r murray_high_spg_2018` |
+
+This 2018-2019 season has been an interesting one for Murray. With a steep decline in low danger SPG, it seems like Murray is unable to save shots from the point on a consistent basis. However, there is improvement: his medium danger SPG has risen close to his excellent 2016 season. Additionally, his total SPG has increased as he improves his game.
+
+Let's take a look at his trend now.
+
+```{r, echo=FALSE}
+plot = plot_spg_game(murray_spg_games_2018,
+					 "#000000",
+					 "#FCB514",
+					 "Matt Murray (2018)")
+plot
+```
+
+Though Murray hasn't played many games, we can see improvement. With 3 shutouts this season, we see Murray's trendline is somewhat skewed. That being said, this season seems more promising that last year, as Murray seems to finally be healthy at the right time.
+
 ### Casey DeSmith
 
-To be done.
+At 27-years-old, Casey DeSmith is a rookie. However, even though he has broken into the NHL late, he has been nothing but money for the Penguins. Having just played 40 games in his entire NHL career, DeSmith looks like a veteran when playing in net. His freakish athleticism helps him make superb saves. However, he is currently serving as backup to Matt Murray. The Penguins are in an interesting position as both DeSmith and Murray have been playing exceptionally as of late (1/7/19). So, let's take a look at DeSmith's numbers from last season, when he played 14 games.
+
+```{r}
+desmith_2017 = get_goalie_data(analysis_2017, "Casey DeSmith")
+
+desmith_spg_2017 = calculate_spg(desmith_2017)
+desmith_spg_games_2017 = get_spg_games(desmith_2017)
+
+desmith_low_spg_2017 = low_danger_spg(desmith_2017)
+desmith_medium_spg_2017 = medium_danger_spg(desmith_2017)
+desmith_high_spg_2017 = high_danger_spg(desmith_2017)
+```
+
+With this data, we can now take a look at his performance.
+
+| Season | SPG | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | --- | -------------- | ----------------- | --- |
+| 2017 | `r desmith_spg_2017` | `r desmith_low_spg_2017` | `r desmith_medium_spg_2017` | `r desmith_high_spg_2017` |
+
+With a SPG of `r desmith_spg_2017`, DeSmith should surely be in conversation as a potential starting goalie for a rebuilding team. Let's see how his trends look like:
+
+```{r, echo=FALSE}
+plot = plot_spg_game(desmith_spg_games_2017,
+					 "#000000",
+					 "#FCB514",
+					 "Casey DeSmith (2017)")
+plot
+```
+
+Though there are only 14 games played by DeSmith, he show's something exceptionally rare: an increasing trend in SPG. This trend however is slightly skewed by his two shutout performances near the end of the season.
+
+It is easy to overlook DeSmith due to his age, but he has pulled his weight. Let's now start looking at 2018-2019 data. This data, is incomplete as the season isn't over.
+
+Note: this data contains all shots up to 1/7/19
+
+```{r}
+desmith_2018 = get_goalie_data(analysis_2018, "Casey DeSmith")
+
+desmith_spg_2018 = calculate_spg(desmith_2018)
+desmith_spg_games_2018 = get_spg_games(desmith_2018)
+
+desmith_low_spg_2018 = low_danger_spg(desmith_2018)
+desmith_medium_spg_2018 = medium_danger_spg(desmith_2018)
+desmith_high_spg_2018 = high_danger_spg(desmith_2018)
+```
+
+Let's look at both seasons together now.
+
+| Season | SPG | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | --- | -------------- | ----------------- | --- |
+| 2017 | `r desmith_spg_2017` | `r desmith_low_spg_2017` | `r desmith_medium_spg_2017` | `r desmith_high_spg_2017` |
+| 2018 | `r desmith_spg_2018` | `r desmith_low_spg_2018` | `r desmith_medium_spg_2018` | `r desmith_high_spg_2018` |
+
+We can see there are some improvement and falters for DeSmith. A major falter for DeSmith is his SPG against low danger shots. As he sees more shots, his data should normalize towards that of a backup goaltender. However, that hasn't happened yet, which is quite peculiar.
+
+Let's look at his trend for the current season:
+
+```{r, echo=FALSE}
+plot = plot_spg_game(desmith_spg_games_2018,
+					 "#000000",
+					 "#FCB514",
+					 "Casey DeSmith (2018)")
+plot
+```
+
+With three early season shutouts, DeSmith's trend is skewed to his detrement. If we remove those three data points, we see that DeSmith is actually on a slight up-swing. With excellent play like this, it would be hard to deny the fact that he is performing well above his expectation.
