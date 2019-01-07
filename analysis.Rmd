@@ -137,14 +137,14 @@ calculate_spg = function(data) {
 	temp = subset(data, goal == 1)
 	total_goals = length(temp$goal)
 	if (total_goals == 0) {
-		100
+		200
 	} else {
 		total_shots / total_goals
 	}
 }
 ```
 
-Note that if a goalie has a shutout, the SPG will be 100. This is due to R using Inf and not throwing an error.
+Note that if a goalie has a shutout, the SPG will be 200. This is due to R using Inf and not throwing an error.
 
 Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
 
@@ -346,11 +346,11 @@ plot = plot_spg_game(fleury_spg_games,
 plot
 ```
 
-Fleury's trend seems to be more stable, unlike Holtby. However, Fleury had 5 shutouts, which are seen as 100 instead as Inf. This leads to there being some minor skewing in the linear model.
+Fleury's trend seems to be more stable, unlike Holtby. However, Fleury had 5 shutouts, which are seen as 200 instead as Inf. This leads to there being some minor skewing in the linear model.
 
 A final player I'd like to look at is Carey Price. Price is supposed to be a Vezina caliber goaltender every year. However, injuries have set him back. Let's see how his trend is for the 2017-2018 season.
 
-```{r}
+```{r, echo=FALSE}
 plot = plot_spg_game(price_spg_games,
 					 "#AF1E2D",
 					 "#192168",
@@ -410,6 +410,68 @@ high_danger_spg = function(data) {
 ```
 
 With these functions, let's compute the SPG for each danger level for each goalie now.
+
+#### Low Danger Shots
+
+```{r}
+holtby_low_spg = low_danger_spg(holtby)
+fleury_low_spg = low_danger_spg(fleury)
+hellebuyck_low_spg = low_danger_spg(hellebuyck)
+price_low_spg = low_danger_spg(price)
+vasilevskiy_low_spg = low_danger_spg(vasilevskiy)
+lehner_low_spg = low_danger_spg(lehner)
+niemi_low_spg = low_danger_spg(niemi)
+halak_low_spg = low_danger_spg(halak)
+budaj_low_spg = low_danger_spg(budaj)
+markstrom_low_spg = low_danger_spg(markstrom)
+```
+
+#### Medium Danger Shots
+
+```{r}
+holtby_medium_spg = medium_danger_spg(holtby)
+fleury_medium_spg = medium_danger_spg(fleury)
+hellebuyck_medium_spg = medium_danger_spg(hellebuyck)
+price_medium_spg = medium_danger_spg(price)
+vasilevskiy_medium_spg = medium_danger_spg(vasilevskiy)
+lehner_medium_spg = medium_danger_spg(lehner)
+niemi_medium_spg = medium_danger_spg(niemi)
+halak_medium_spg = medium_danger_spg(halak)
+budaj_medium_spg = medium_danger_spg(budaj)
+markstrom_medium_spg = medium_danger_spg(markstrom)
+```
+
+#### High Danger Shots
+
+```{r}
+holtby_high_spg = high_danger_spg(holtby)
+fleury_high_spg = high_danger_spg(fleury)
+hellebuyck_high_spg = high_danger_spg(hellebuyck)
+price_high_spg = high_danger_spg(price)
+vasilevskiy_high_spg = high_danger_spg(vasilevskiy)
+lehner_high_spg = high_danger_spg(lehner)
+niemi_high_spg = high_danger_spg(niemi)
+halak_high_spg = high_danger_spg(halak)
+budaj_high_spg = high_danger_spg(budaj)
+markstrom_high_spg = high_danger_spg(markstrom)
+```
+
+Here's a table showing each of the goalies with their low, medium, and high SPG values.
+
+| Goalie | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | -------------- | ----------------- | --------------- |
+| Holtby | `r holtby_low_spg` | `r holtby_medium_spg` | `r holtby_high_spg` |
+| Fleury | `r fleury_low_spg` | `r fleury_medium_spg` | `r fleury_high_spg` |
+| Hellebuyck | `r hellebuyck_low_spg` | `r hellebuyck_medium_spg` | `r hellebuyck_high_spg` |
+| Price | `r price_low_spg` | `r price_medium_spg` | `r price_high_spg` |
+| Vasilevskiy | `r vasilevskiy_low_spg` | `r vasilevskiy_medium_spg` | `r vasilevskiy_high_spg` |
+| Lehner | `r lehner_low_spg` | `r lehner_medium_spg` | `r lehner_high_spg` |
+| Niemi | `r niemi_low_spg` | `r niemi_medium_spg` | `r niemi_high_spg` |
+| Halak | `r halak_low_spg` | `r halak_medium_spg` | `r halak_high_spg` |
+| Budaj | `r budaj_low_spg` | `r budaj_medium_spg` | `r budaj_high_spg` |
+| Markstrom | `r markstrom_low_spg` | `r markstrom_medium_spg` | `r markstrom_high_spg` |
+
+As we can see, there seems to be a distiction between elite goalies (like Holtby, Fleury, and Vasilevskiy) and struggling goalies (Niemi, Halak, and Markstrom).
 
 ## Skater Aspect
 
