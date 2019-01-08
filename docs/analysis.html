@@ -2431,7 +2431,112 @@ tuch_high_spg = high_danger_spg(tuch)</code></pre>
 <div id="defensemen" class="section level3">
 <h3>Defensemen</h3>
 <p>Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.</p>
-<p>To be done.</p>
+<p>Let’s load in our defensemen’s data.</p>
+<pre class="r"><code>burns = get_skater_data(analysis_2017, &quot;Brent Burns&quot;)
+klingberg = get_skater_data(analysis_2017, &quot;John Klingberg&quot;)
+doughty = get_skater_data(analysis_2017, &quot;Drew Doughty&quot;)
+maatta = get_skater_data(analysis_2017, &quot;Olli Maatta&quot;)
+engelland = get_skater_data(analysis_2017, &quot;Deryk Engelland&quot;)</code></pre>
+<p>Now, we can calculate SPG.</p>
+<pre class="r"><code>burns_spg = calculate_spg(burns)
+klingberg_spg = calculate_spg(klingberg)
+doughty_spg = calculate_spg(doughty)
+maatta_spg = calculate_spg(maatta)
+engelland_spg = calculate_spg(engelland)</code></pre>
+<p>Here’s how these defenseman shored up:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Player</th>
+<th>SPG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Burns</td>
+<td>40.1666667</td>
+</tr>
+<tr class="even">
+<td>Klingberg</td>
+<td>35.75</td>
+</tr>
+<tr class="odd">
+<td>Doughty</td>
+<td>27.7</td>
+</tr>
+<tr class="even">
+<td>Maatta</td>
+<td>30.7142857</td>
+</tr>
+<tr class="odd">
+<td>Engelland</td>
+<td>31.2</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s also calculate SPG by danger level.</p>
+<pre class="r"><code>burns_low_spg = low_danger_spg(burns)
+burns_medium_spg = medium_danger_spg(burns)
+burns_high_spg = high_danger_spg(burns)
+
+klingberg_low_spg = low_danger_spg(klingberg)
+klingberg_medium_spg = medium_danger_spg(klingberg)
+klingberg_high_spg = high_danger_spg(klingberg)
+
+doughty_low_spg = low_danger_spg(doughty)
+doughty_medium_spg = medium_danger_spg(doughty)
+doughty_high_spg = high_danger_spg(doughty)
+
+maatta_low_spg = low_danger_spg(maatta)
+maatta_medium_spg = medium_danger_spg(maatta)
+maatta_high_spg = high_danger_spg(maatta)
+
+engelland_low_spg = low_danger_spg(engelland)
+engelland_medium_spg = medium_danger_spg(engelland)
+engelland_high_spg = high_danger_spg(engelland)</code></pre>
+<p>Now, we can compare all the defensemen.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Player</th>
+<th>Low Danger SPG</th>
+<th>Medium Danger SPG</th>
+<th>High Danger SPG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Burns</td>
+<td>30.2</td>
+<td>89.25</td>
+<td>24</td>
+</tr>
+<tr class="even">
+<td>Klingberg</td>
+<td>24.5</td>
+<td>36.1666667</td>
+<td>23.4</td>
+</tr>
+<tr class="odd">
+<td>Doughty</td>
+<td>200</td>
+<td>54</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td>Maatta</td>
+<td>200</td>
+<td>29.5</td>
+<td>34</td>
+</tr>
+<tr class="odd">
+<td>Engelland</td>
+<td>200</td>
+<td>32.25</td>
+<td>53</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="positional-aspect" class="section level2">
