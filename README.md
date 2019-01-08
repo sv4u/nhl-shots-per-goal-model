@@ -9,6 +9,7 @@ There will be more updates to this as I continue to work on it.
 ## Updates
 
 1. (1/6/19) PDF of the analysis is here: [analysis.pdf](docs/analysis.pdf)
+2. (1/7/19) Website made official! Find it here: [crispy-meme](http://sasankvishnubhatla.net/shots_per_goal/analysis.html)
 
 ## To Do List
 
