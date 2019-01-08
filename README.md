@@ -18,11 +18,11 @@ There will be more updates to this as I continue to work on it.
 	- [x] Write functions to subset their data
 	- [x] Write functions to calculate their spg
 	- [x] If possible, calculate spg for the following: locations, games, season
-- [ ] Skater Analysis
+- [x] Skater Analysis
 	- [x] Pick 15 skaters
 	- [x] Write functions to subset their data
 	- [x] Write functions to calculate their spg
-	- [ ] If possible, calculate spg for the following: locations, ~games~, season
+	- [x] If possible, calculate spg for the following: locations, ~games~, season
 - [ ] Positional Analysis
 	- [ ] Look at C, D, LW, RW
 	- [ ] Write functions to subset data in those positions
