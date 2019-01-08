@@ -146,7 +146,11 @@ calculate_spg = function(data) {
 	total_shots = length(data$goal)
 	temp = subset(data, goal == 1)
 	total_goals = length(temp$goal)
-	total_shots / total_goals
+	if (total_goals == 0) {
+		200
+	} else {
+		total_shots / total_goals
+	}
 }
 ```
 
@@ -155,10 +159,6 @@ Note that if a goalie has a shutout, the SPG will be 200. This is due to R using
 #### Discussion: The Shutout
 
 When calculating SPG, we must decided what should be awarded for a shutout. R handles a division by 0 as infinity, as it should. However, this does not bode well with visualizations. Therefore, I have set the value to 200. In my research and sifting through data, I have noticed that no goalie has had any SPG above 175. Therefore, it would make sense to set a shutout as something above 200. However, in the future, I will be looking to keep a shutout as infinity so it tell the true story about the goalie.
-
-#### Update: The Shutout
-
-After much thinking, I have determined to use infinity as the shutout SPG.
 
 Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
 
