@@ -550,22 +550,54 @@ Let's take a look at what each player has done.
 
 As we can see, it takes Christian Dvorak `r dvorak_spg` shots to score a goal, while Anze Kopitar takes about half of that with `r kopitar_spg` shots in order to score a goal.
 
-Let's now look at game by game SPG.
+Let's now look at locational SPG.
 
 ```{r}
-crosby_spg_games = get_spg_games(crosby)
-mcdavid_spg_games = get_spg_games(mcdavid)
-kopitar_spg_games = get_spg_games(kopitar)
-dvorak_spg_games = get_spg_games(dvorak)
+crosby_low_spg = low_danger_spg(crosby)
+crosby_medium_spg = medium_danger_spg(crosby)
+crosby_high_spg = high_danger_spg(crosby)
+
+mcdavid_low_spg = low_danger_spg(mcdavid)
+mcdavid_medium_spg = medium_danger_spg(mcdavid)
+mcdavid_high_spg = high_danger_spg(mcdavid)
+
+kopitar_low_spg = low_danger_spg(kopitar)
+kopitar_medium_spg = medium_danger_spg(kopitar)
+kopitar_high_spg = high_danger_spg(kopitar)
+
+dvorak_low_spg = low_danger_spg(dvorak)
+dvorak_medium_spg = medium_danger_spg(dvorak)
+dvorak_high_spg = high_danger_spg(dvorak)
 ```
 
-Let's compare Sidney Crosby and Connor McDavid.
+Let's put it all in a table so we can compare.
+
+| Player | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | -------------- | ----------------- | --------------- |
+| Crosby | `r crosby_low_spg` | `r crosby_medium_spg` | `r crosby_high_spg` |
+| McDavid | `r mcdavid_low_spg` | `r mcdavid_medium_spg` | `r mcdavid_high_spg` |
+| Kopitar | `r kopitar_low_spg` | `r kopitar_medium_spg` | `r kopitar_high_spg` |
+| Dvorak | `r dvorak_low_spg` | `r dvorak_medium_spg` | `r dvorak_high_spg` |
+
+As we can see here, Anze Kopitar is not a high volume shooter, while Crosby and Dvorak are. Using SPG, we can analyze player shooting trends and how it affects their scoring.
 
 ### Left Wingers
 
+Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.
+
+To be done.
+
 ### Right Wingers
 
+Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.
+
+To be done.
+
 ### Defensemen
+
+Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.
+
+To be done.
 
 ## Positional Aspect
 
