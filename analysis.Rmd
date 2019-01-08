@@ -13,6 +13,10 @@ output:
     toc: true
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
 ```{r, echo = FALSE}
 rm(list = ls())
 
@@ -122,7 +126,7 @@ Let's start be looking at a few select goalies from the 2017-2018 season:
 To start, we need a function that will take a goalie's name and return all their data. So, let's write our specified subset function:
 
 ```{r}
-get_goalie_data <- function(data, name) {
+get_goalie_data = function(data, name) {
 	subset(data, goalie_name == name)
 }
 ```
@@ -133,7 +137,7 @@ So, let's now start with Brayden Holtby:
 holtby = get_goalie_data(analysis_2017, "Braden Holtby")
 ```
 
-### Shots per Goals for a Season
+### Shots per Goals for a Season {.tabset .tabset-fade}
 
 With this data, we can now calculate a few shot per goal stats. Let's start with the most basic: shots per goal for the entire season.
 
@@ -142,11 +146,7 @@ calculate_spg = function(data) {
 	total_shots = length(data$goal)
 	temp = subset(data, goal == 1)
 	total_goals = length(temp$goal)
-	if (total_goals == 0) {
-		200
-	} else {
-		total_shots / total_goals
-	}
+	total_shots / total_goals
 }
 ```
 
@@ -155,6 +155,10 @@ Note that if a goalie has a shutout, the SPG will be 200. This is due to R using
 #### Discussion: The Shutout
 
 When calculating SPG, we must decided what should be awarded for a shutout. R handles a division by 0 as infinity, as it should. However, this does not bode well with visualizations. Therefore, I have set the value to 200. In my research and sifting through data, I have noticed that no goalie has had any SPG above 175. Therefore, it would make sense to set a shutout as something above 200. However, in the future, I will be looking to keep a shutout as infinity so it tell the true story about the goalie.
+
+#### Update: The Shutout
+
+After much thinking, I have determined to use infinity as the shutout SPG.
 
 Now with this function, let's calculate the total shots per goal for the 2017-2018 season for Braden Holtby.
 
@@ -225,7 +229,7 @@ Ideally, during a hockey game, a goalie would like to have a shutout. A shutout,
 
 If one were to plot this trend, it would look like this:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 goals = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
 spg = 30 / goals
 spg_decay = data.frame(x = goals, y = spg)
@@ -328,7 +332,7 @@ markstrom_spg_games = get_spg_games(markstrom)
 
 Let's take a look at these goalies: Holtby, Fleury, Price, Lehner, and Markstrom. Here's the trend of Braden Holtby's SPG by game.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot_spg_game = function (spg_game, primary, secondary, name) {
 	display = paste(name, "SPG By Game", sep = " ")
 	frame = data.frame(x = c(1:length(spg_game)), y = spg_game)
@@ -347,7 +351,7 @@ In this graph, we see that each point is Holtby's SPG for a specific game. The l
 
 Let's now look at someone who he faced in the Stanley Cup finals: Marc-Andre Fleury
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(fleury_spg_games, "#B4975A", "#333F42", "Marc-Andre Fleury")
 plot
 ```
@@ -356,7 +360,7 @@ Fleury's trend seems to be more stable, unlike Holtby. However, Fleury had 5 shu
 
 A final player I'd like to look at is Carey Price. Price is supposed to be a Vezina caliber goaltender every year. However, injuries have set him back. Let's see how his trend is for the 2017-2018 season.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(price_spg_games,
 					 "#AF1E2D",
 					 "#192168",
@@ -366,7 +370,7 @@ plot
 
 Similar to Holtby, Price has a decreasing trend in his SPG. However, Price's decreasing trend is less than Holtby's.
 
-### Shots per Goal from Specific Locations
+### Shots per Goal from Specific Locations {.tabset .tabset-fade}
 
 In my initial attempt at analyzing shots per goal, I determined three danger zones in the attacking end: low, medium, and high. In the goalie dataframe, we've included x and y coordinates since these zones are in specific locations. With landmarks on the ice, like the slot and circles, I determined which were low, medium, and high danger. Here is was I determined:
 
@@ -462,6 +466,8 @@ budaj_high_spg = high_danger_spg(budaj)
 markstrom_high_spg = high_danger_spg(markstrom)
 ```
 
+#### Putting It All Together
+
 Here's a table showing each of the goalies with their low, medium, and high SPG values.
 
 | Goalie | Low Danger SPG | Medium Danger SPG | High Danger SPG |
@@ -477,11 +483,89 @@ Here's a table showing each of the goalies with their low, medium, and high SPG 
 | Budaj | `r budaj_low_spg` | `r budaj_medium_spg` | `r budaj_high_spg` |
 | Markstrom | `r markstrom_low_spg` | `r markstrom_medium_spg` | `r markstrom_high_spg` |
 
+Note: a blank means that they have an infinite SPG i.e. gave up no goals from that zone
+
 As we can see, there seems to be a distiction between elite goalies (like Holtby, Fleury, and Vasilevskiy) and struggling goalies (Niemi, Halak, and Markstrom).
 
-## Skater Aspect
+## Skater Aspect {.tabset .tabset-fade}
 
-To be done.
+Similar to goalies, SPG can be used on skaters. When SPG is used on a skater, we see that it is very similar to a strike rate. Let's start by first selecting 15 skaters: 4 centers, 3 left wingers, 3 right wingers, and 5 defenseman. I've chosen to look at the following:
+
+* Centers
+	* Sidney Crosby
+	* Connor McDavid
+	* Anze Kopitar
+	* Chistian Dvorak
+* Left Wingers
+	* Alex Ovechkin
+	* Taylor Hall
+	* Jujhar Khaira
+* Right Wingers
+	* Phil Kessel
+	* Nikita Kucherov
+	* Alex Tuch
+* Defensemen
+	* Brent Burns
+	* John Klingberg
+	* Drew Doughty
+	* Olli Maatta
+	* Deryk Engelland
+
+Let's start with the centers. We need a function to subset the skater data. Similar to `get_goalie_data`, we'll write a function to subset based on a skater's name.
+
+```{r}
+get_skater_data = function(data, name) {
+	subset(data, skater_name == name)
+}
+```
+
+With this, we can use our `calculate_spg` function to calulate the SPG for a season. We've nicely written our `get_spg_games` function to work on any player, skater or goalie. Furthermore, our location functions will work on any plaer, skater or goalie. So, we can do a complete skater analysis without having to write any supplemental functions.
+
+### Centers
+
+```{r}
+crosby = get_skater_data(analysis_2017, "Sidney Crosby")
+mcdavid = get_skater_data(analysis_2017, "Connor McDavid")
+kopitar = get_skater_data(analysis_2017, "Anze Kopitar")
+dvorak = get_skater_data(analysis_2017, "Christian Dvorak")
+```
+
+Now, we can calculate SPG.
+
+```{r}
+crosby_spg = calculate_spg(crosby)
+mcdavid_spg = calculate_spg(mcdavid)
+kopitar_spg = calculate_spg(kopitar)
+dvorak_spg = calculate_spg(dvorak)
+```
+
+Let's take a look at what each player has done.
+
+| Player | SPG |
+| ------ | --- |
+| Crosby | `r crosby_spg` |
+| McDavid | `r mcdavid_spg` |
+| Kopitar | `r kopitar_spg` |
+| Dvorak | `r dvorak_spg` |
+
+As we can see, it takes Christian Dvorak `r dvorak_spg` shots to score a goal, while Anze Kopitar takes about half of that with `r kopitar_spg` shots in order to score a goal.
+
+Let's now look at game by game SPG.
+
+```{r}
+crosby_spg_games = get_spg_games(crosby)
+mcdavid_spg_games = get_spg_games(mcdavid)
+kopitar_spg_games = get_spg_games(kopitar)
+dvorak_spg_games = get_spg_games(dvorak)
+```
+
+Let's compare Sidney Crosby and Connor McDavid.
+
+### Left Wingers
+
+### Right Wingers
+
+### Defensemen
 
 ## Positional Aspect
 
@@ -491,7 +575,7 @@ To be done.
 
 To be done.
 
-## Specific Player Analysis {.tabset .tabset-fade}
+## Player Analysis {.tabset .tabset-fade}
 
 ### Matt Murray
 
@@ -550,7 +634,7 @@ From this, we can see that Murray has always been strong against low danger shot
 
 Let's now take a look at his trends for each game he played for both season. First, we'll look at 2016-2017.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(murray_spg_games_2016,
 					 "#000000",
 					 "#FCB514",
@@ -562,7 +646,7 @@ We can see that Murray followed most trends that other goalies did: a decreasing
 
 Let's now take a look at 2017-2018.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(murray_spg_games_2017,
 					 "#000000",
 					 "#FCB514",
@@ -622,7 +706,7 @@ This 2018-2019 season has been an interesting one for Murray. With a steep decli
 
 Let's take a look at his trend now.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(murray_spg_games_2018,
 					 "#000000",
 					 "#FCB514",
@@ -655,7 +739,7 @@ With this data, we can now take a look at his performance.
 
 With a SPG of `r desmith_spg_2017`, DeSmith should surely be in conversation as a potential starting goalie for a rebuilding team. Let's see how his trends look like:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(desmith_spg_games_2017,
 					 "#000000",
 					 "#FCB514",
@@ -691,7 +775,7 @@ We can see there are some improvement and falters for DeSmith. A major falter fo
 
 Let's look at his trend for the current season:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 plot = plot_spg_game(desmith_spg_games_2018,
 					 "#000000",
 					 "#FCB514",
