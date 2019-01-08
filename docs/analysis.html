@@ -2273,7 +2273,81 @@ dvorak_high_spg = high_danger_spg(dvorak)</code></pre>
 <div id="left-wingers" class="section level3">
 <h3>Left Wingers</h3>
 <p>Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.</p>
-<p>To be done.</p>
+<pre class="r"><code>ovechkin = get_skater_data(analysis_2017, &quot;Alex Ovechkin&quot;)
+hall = get_skater_data(analysis_2017, &quot;Taylor Hall&quot;)
+khaira = get_skater_data(analysis_2017, &quot;Jujhar Khaira&quot;)</code></pre>
+<p>Now, we can calculate SPG.</p>
+<pre class="r"><code>ovechkin_spg = calculate_spg(ovechkin)
+hall_spg = calculate_spg(hall)
+khaira_spg = calculate_spg(khaira)</code></pre>
+<p>Let’s take a look at what each player has done.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Player</th>
+<th>SPG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ovechkin</td>
+<td>10.7346939</td>
+</tr>
+<tr class="even">
+<td>Hall</td>
+<td>9.6052632</td>
+</tr>
+<tr class="odd">
+<td>Khaira</td>
+<td>10.1818182</td>
+</tr>
+</tbody>
+</table>
+<p>Though Jujhar Khaira and Alex Ovechkin have completely different play styles, we see that both have a very similar SPG. Hall, a pure scoring winger, has a smaller SPG, showing that he has a more accurate shot or that he has increased scoring chances and converts on them more often that Ovechkin and Khaira.</p>
+<p>Now, let’s calculate their danger level SPG.</p>
+<pre class="r"><code>ovechkin_low_spg = low_danger_spg(ovechkin)
+ovechkin_medium_spg = medium_danger_spg(ovechkin)
+ovechkin_high_spg = high_danger_spg(ovechkin)
+
+hall_low_spg = low_danger_spg(hall)
+hall_medium_spg = medium_danger_spg(hall)
+hall_high_spg = high_danger_spg(hall)
+
+khaira_low_spg = low_danger_spg(khaira)
+khaira_medium_spg = medium_danger_spg(khaira)
+khaira_high_spg = high_danger_spg(khaira)</code></pre>
+<p>Let’s look at the SPGs now.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Player</th>
+<th>Low Danger SPG</th>
+<th>Medium Danger SPG</th>
+<th>High Danger SPG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ovechkin</td>
+<td>13</td>
+<td>12.3870968</td>
+<td>8.8974359</td>
+</tr>
+<tr class="even">
+<td>Hall</td>
+<td>200</td>
+<td>12.35</td>
+<td>8.125</td>
+</tr>
+<tr class="odd">
+<td>Khaira</td>
+<td>200</td>
+<td>12.8</td>
+<td>7.7272727</td>
+</tr>
+</tbody>
+</table>
+<p>As we can see, Ovechkin has scored from the point, while Hall and Khaira have not. This matches both Hall’s and Khaira’s play style, as both do not have a slapshot like Ovechkin.</p>
 </div>
 <div id="right-wingers" class="section level3">
 <h3>Right Wingers</h3>
@@ -2374,18 +2448,18 @@ murray_high_spg_2017 = high_danger_spg(murray_2017)</code></pre>
 regular_season_2018 = subset(data_2018, isPlayoffGame == 0)
 
 analysis_2018 = data.frame(x = regular_season_2018$xCord,
-                           y = regular_season_2018$yCord,
-                           x_adj = regular_season_2018$xCordAdjusted,
-                           y_adj = regular_season_2018$yCordAdjusted,
-                           angle = regular_season_2018$shotAngle,
-                           angle_adj = regular_season_2018$shotAngleAdjusted,
-                           goal = regular_season_2018$goal,
-                           goalie_id = regular_season_2018$goalieIdForShot,
-                           goalie_name = regular_season_2018$goalieNameForShot,
-                           skater_id = regular_season_2018$shooterPlayerId,
-                           skater_name = regular_season_2018$shooterName,
-                           pos = regular_season_2018$playerPositionThatDidEvent,
-                           game = regular_season_2018$game_id)</code></pre>
+               y = regular_season_2018$yCord,
+               x_adj = regular_season_2018$xCordAdjusted,
+               y_adj = regular_season_2018$yCordAdjusted,
+               angle = regular_season_2018$shotAngle,
+               angle_adj = regular_season_2018$shotAngleAdjusted,
+               goal = regular_season_2018$goal,
+               goalie_id = regular_season_2018$goalieIdForShot,
+               goalie_name = regular_season_2018$goalieNameForShot,
+               skater_id = regular_season_2018$shooterPlayerId,
+               skater_name = regular_season_2018$shooterName,
+               pos = regular_season_2018$playerPositionThatDidEvent,
+               game = regular_season_2018$game_id)</code></pre>
 <p>With <code>analysis_2018</code>, we can start looking at Murray’s data.</p>
 <pre class="r"><code>murray_2018 = get_goalie_data(analysis_2018, &quot;Matt Murray&quot;)
 

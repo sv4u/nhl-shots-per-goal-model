@@ -343,6 +343,7 @@ plot_spg_game = function (spg_game, primary, secondary, name) {
 		theme_minimal()
 	plot
 }
+
 plot = plot_spg_game(holtby_spg_games, "#041E42", "#C8102E", "Braden Holtby")
 plot
 ```
@@ -578,7 +579,55 @@ As we can see here, Anze Kopitar is not a high volume shooter, while Crosby and 
 
 Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.
 
-To be done.
+```{r}
+ovechkin = get_skater_data(analysis_2017, "Alex Ovechkin")
+hall = get_skater_data(analysis_2017, "Taylor Hall")
+khaira = get_skater_data(analysis_2017, "Jujhar Khaira")
+```
+
+Now, we can calculate SPG.
+
+```{r}
+ovechkin_spg = calculate_spg(ovechkin)
+hall_spg = calculate_spg(hall)
+khaira_spg = calculate_spg(khaira)
+```
+
+Let's take a look at what each player has done.
+
+| Player | SPG |
+| ------ | --- |
+| Ovechkin | `r ovechkin_spg` |
+| Hall | `r hall_spg` |
+| Khaira | `r khaira_spg` |
+
+Though Jujhar Khaira and Alex Ovechkin have completely different play styles, we see that both have a very similar SPG. Hall, a pure scoring winger, has a smaller SPG, showing that he has a more accurate shot or that he has increased scoring chances and converts on them more often that Ovechkin and Khaira.
+
+Now, let's calculate their danger level SPG.
+
+```{r}
+ovechkin_low_spg = low_danger_spg(ovechkin)
+ovechkin_medium_spg = medium_danger_spg(ovechkin)
+ovechkin_high_spg = high_danger_spg(ovechkin)
+
+hall_low_spg = low_danger_spg(hall)
+hall_medium_spg = medium_danger_spg(hall)
+hall_high_spg = high_danger_spg(hall)
+
+khaira_low_spg = low_danger_spg(khaira)
+khaira_medium_spg = medium_danger_spg(khaira)
+khaira_high_spg = high_danger_spg(khaira)
+```
+
+Let's look at the SPGs now.
+
+| Player | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | -------------- | ----------------- | --------------- |
+| Ovechkin | `r ovechkin_low_spg` | `r ovechkin_medium_spg` | `r ovechkin_high_spg` |
+| Hall | `r hall_low_spg` | `r hall_medium_spg` | `r hall_high_spg` |
+| Khaira | `r khaira_low_spg` | `r khaira_medium_spg` | `r khaira_high_spg` |
+
+As we can see, Ovechkin has scored from the point, while Hall and Khaira have not. This matches both Hall's and Khaira's play style, as both do not have a slapshot like Ovechkin.
 
 ### Right Wingers
 
@@ -685,18 +734,18 @@ data_2018 = read.csv("data/2018.csv")
 regular_season_2018 = subset(data_2018, isPlayoffGame == 0)
 
 analysis_2018 = data.frame(x = regular_season_2018$xCord,
-                           y = regular_season_2018$yCord,
-                           x_adj = regular_season_2018$xCordAdjusted,
-                           y_adj = regular_season_2018$yCordAdjusted,
-                           angle = regular_season_2018$shotAngle,
-                           angle_adj = regular_season_2018$shotAngleAdjusted,
-                           goal = regular_season_2018$goal,
-                           goalie_id = regular_season_2018$goalieIdForShot,
-                           goalie_name = regular_season_2018$goalieNameForShot,
-                           skater_id = regular_season_2018$shooterPlayerId,
-                           skater_name = regular_season_2018$shooterName,
-                           pos = regular_season_2018$playerPositionThatDidEvent,
-                           game = regular_season_2018$game_id)
+			   y = regular_season_2018$yCord,
+			   x_adj = regular_season_2018$xCordAdjusted,
+			   y_adj = regular_season_2018$yCordAdjusted,
+			   angle = regular_season_2018$shotAngle,
+			   angle_adj = regular_season_2018$shotAngleAdjusted,
+			   goal = regular_season_2018$goal,
+			   goalie_id = regular_season_2018$goalieIdForShot,
+			   goalie_name = regular_season_2018$goalieNameForShot,
+			   skater_id = regular_season_2018$shooterPlayerId,
+			   skater_name = regular_season_2018$shooterName,
+			   pos = regular_season_2018$playerPositionThatDidEvent,
+			   game = regular_season_2018$game_id)
 ```
 
 With `analysis_2018`, we can start looking at Murray's data.
