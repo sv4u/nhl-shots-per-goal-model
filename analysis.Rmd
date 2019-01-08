@@ -28,7 +28,7 @@ library(purrr)
 library(shiny)
 ```
 
-Last Update: January 7th, 2019
+Last Update: `r Sys.Date()`
 
 GitHub Repo: [sv4u/nhl-shots-per-goal-model](https://github.com/sv4u/nhl-shots-per-goal-model)
 
@@ -633,7 +633,55 @@ As we can see, Ovechkin has scored from the point, while Hall and Khaira have no
 
 Similar to the center analysis, we will just look at SPG over an entire season and SPG at danger locations.
 
-To be done.
+```{r}
+kessel = get_skater_data(analysis_2017, "Phil Kessel")
+kucherov = get_skater_data(analysis_2017, "Nikita Kucherov")
+tuch = get_skater_data(analysis_2017, "Alex Tuch")
+```
+
+Now for the seasonal SPGs:
+
+```{r}
+kessel_spg = calculate_spg(kessel)
+kucherov_spg = calculate_spg(kucherov)
+tuch_spg = calculate_spg(tuch)
+```
+
+Here's what they did over the 2017-2018 season.
+
+| Player | SPG |
+| ------ | --- |
+| Kessel | `r kessel_spg` |
+| Kucherov | `r kucherov_spg` |
+| Tuch | `r tuch_spg` |
+
+As we can see, Kessel is much like Hall, a pure goal scorer. Kucherov is exceptional at scoring as well as passing, as his SPG shows. Alex Tuch on the other had is a young player who is just breaking into the league.
+
+Let's calculate the danger level SPGs now.
+
+```{r}
+kessel_low_spg = low_danger_spg(kessel)
+kessel_medium_spg = medium_danger_spg(kessel)
+kessel_high_spg = high_danger_spg(kessel)
+
+kucherov_low_spg = low_danger_spg(kucherov)
+kucherov_medium_spg = medium_danger_spg(kucherov)
+kucherov_high_spg = high_danger_spg(kucherov)
+
+tuch_low_spg = low_danger_spg(tuch)
+tuch_medium_spg = medium_danger_spg(tuch)
+tuch_high_spg = high_danger_spg(tuch)
+```
+
+And now let's look at what the data shows:
+
+| Player | Low Danger SPG | Medium Danger SPG | High Danger SPG |
+| ------ | -------------- | ----------------- | --------------- |
+| Kessel | `r kessel_low_spg` | `r kessel_medium_spg` | `r kessel_high_spg` |
+| Kucherov | `r kucherov_low_spg` | `r kucherov_medium_spg` | `r kucherov_high_spg` |
+| Tuch | `r tuch_low_spg` | `r tuch_medium_spg` | `r tuch_high_spg` |
+
+As we can see, it is uncommon for these players to take shots from the point. Tuch does have success from the point, but I believe that success is short lived as it should increase as he plays more games.
 
 ### Defensemen
 
