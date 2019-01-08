@@ -1687,18 +1687,18 @@ $(document).ready(function () {
 </table>
 <p>Now, let’s create a new dataframe with just those columns.</p>
 <pre class="r"><code>analysis_2017 = data.frame(x = regular_season_2017$xCord,
-                           y = regular_season_2017$yCord,
-                           x_adj = regular_season_2017$xCordAdjusted,
-                           y_adj = regular_season_2017$yCordAdjusted,
-                           angle = regular_season_2017$shotAngle,
-                           angle_adj = regular_season_2017$shotAngleAdjusted,
-                           goal = regular_season_2017$goal,
-                           goalie_id = regular_season_2017$goalieIdForShot,
-                           goalie_name = regular_season_2017$goalieNameForShot,
-                           skater_id = regular_season_2017$shooterPlayerId,
-                           skater_name = regular_season_2017$shooterName,
-                           pos = regular_season_2017$playerPositionThatDidEvent,
-                           game = regular_season_2017$game_id)</code></pre>
+               y = regular_season_2017$yCord,
+               x_adj = regular_season_2017$xCordAdjusted,
+               y_adj = regular_season_2017$yCordAdjusted,
+               angle = regular_season_2017$shotAngle,
+               angle_adj = regular_season_2017$shotAngleAdjusted,
+               goal = regular_season_2017$goal,
+               goalie_id = regular_season_2017$goalieIdForShot,
+               goalie_name = regular_season_2017$goalieNameForShot,
+               skater_id = regular_season_2017$shooterPlayerId,
+               skater_name = regular_season_2017$shooterName,
+               pos = regular_season_2017$playerPositionThatDidEvent,
+               game = regular_season_2017$game_id)</code></pre>
 <p>With this <code>analysis_2017</code> dataframe, we can start looking at a proposed statistic: shots per goal.</p>
 </div>
 <div id="shots-per-goal" class="section level1 tabset tabset-fade">
@@ -1997,19 +1997,15 @@ markstrom_spg_games = get_spg_games(markstrom)</code></pre>
 <p>I do know that this is not as accurate as it could be. There is significantly more areas that can be studied, such has high and low slot, net front, and the half-walls. That being said, this is not meant to be an in-depth analysis; instead I am looking for generic trends.</p>
 <p>So, without further ado, let’s start by writing a few subsetting functions to help us look at the trends in shots per goal.</p>
 <pre class="r"><code>get_low_danger = function(data) {
-    subset(data,
-           x_adj &gt;= 20 &amp; x_adj &lt;= 35 &amp; y_adj &lt;= 43 &amp; y_adj &gt;= -43)
+    subset(data, x_adj &gt;= 20 &amp; x_adj &lt;= 35 &amp; y_adj &lt;= 43 &amp; y_adj &gt;= -43)
 }
 
 get_medium_danger = function(data) {
-    subset(data,
-           x_adj &gt;= 32 &amp; x_adj &lt;= 82 &amp;
-            ((y_adj &gt;= 7 &amp; y_adj &lt;= 43) | (y_adj &lt;= -7 &amp; y_adj &gt;= -43)))
+    subset(data, x_adj &gt;= 32 &amp; x_adj &lt;= 82 &amp; ((y_adj &gt;= 7 &amp; y_adj &lt;= 43) | (y_adj &lt;= -7 &amp; y_adj &gt;= -43)))
 }
 
 get_high_danger = function(data) {
-    subset(data,
-           x_adj &gt;= 40 &amp; x &lt;= 90 &amp; y_adj &gt;= -22 &amp; y_adj &lt;= 22)
+    subset(data, x_adj &gt;= 40 &amp; x &lt;= 90 &amp; y_adj &gt;= -22 &amp; y_adj &lt;= 22)
 }</code></pre>
 <p>With these functions, we can start looking at how a goalie performs when a shot is taken from a certain location. Let’s start by writing a few more functions which will calculate the SPG for a certain danger level.</p>
 <pre class="r"><code>low_danger_spg = function(data) {
@@ -2307,19 +2303,18 @@ dvorak_high_spg = high_danger_spg(dvorak)</code></pre>
 <pre class="r"><code>data_2016 = read.csv(&quot;data/2016.csv&quot;)
 regular_season_2016 = subset(data_2016, isPlayoffGame == 0)
 analysis_2016 = data.frame(x = regular_season_2016$xCord,
-                           y = regular_season_2016$yCord,
-                           x_adj = regular_season_2016$xCordAdjusted,
-                           y_adj = regular_season_2016$yCordAdjusted,
-                           angle = regular_season_2016$shotAngle,
-                           angle_adj = regular_season_2016$shotAngleAdjusted,
-                           goal = regular_season_2016$goal,
-                           goalie_id = regular_season_2016$goalieIdForShot,
-                           goalie_name =
-                            regular_season_2016$goalieNameForShot,
-                           skater_id = regular_season_2016$shooterPlayerId,
-                           skater_name = regular_season_2016$shooterName,
-                           pos = regular_season_2016$playerPositionThatDidEvent,
-                           game = regular_season_2016$game_id)
+               y = regular_season_2016$yCord,
+               x_adj = regular_season_2016$xCordAdjusted,
+               y_adj = regular_season_2016$yCordAdjusted,
+               angle = regular_season_2016$shotAngle,
+               angle_adj = regular_season_2016$shotAngleAdjusted,
+               goal = regular_season_2016$goal,
+               goalie_id = regular_season_2016$goalieIdForShot,
+               goalie_name = regular_season_2016$goalieNameForShot,
+               skater_id = regular_season_2016$shooterPlayerId,
+               skater_name = regular_season_2016$shooterName,
+               pos = regular_season_2016$playerPositionThatDidEvent,
+               game = regular_season_2016$game_id)
 
 murray_2016 = get_goalie_data(analysis_2016, &quot;Matt Murray&quot;)
 murray_2017 = get_goalie_data(analysis_2017, &quot;Matt Murray&quot;)</code></pre>

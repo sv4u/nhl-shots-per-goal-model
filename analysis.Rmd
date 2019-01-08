@@ -88,18 +88,18 @@ Now, let's create a new dataframe with just those columns.
 
 ```{r}
 analysis_2017 = data.frame(x = regular_season_2017$xCord,
-						   y = regular_season_2017$yCord,
-						   x_adj = regular_season_2017$xCordAdjusted,
-						   y_adj = regular_season_2017$yCordAdjusted,
-						   angle = regular_season_2017$shotAngle,
-						   angle_adj = regular_season_2017$shotAngleAdjusted,
-						   goal = regular_season_2017$goal,
-						   goalie_id = regular_season_2017$goalieIdForShot,
-						   goalie_name = regular_season_2017$goalieNameForShot,
-						   skater_id = regular_season_2017$shooterPlayerId,
-						   skater_name = regular_season_2017$shooterName,
-						   pos = regular_season_2017$playerPositionThatDidEvent,
-						   game = regular_season_2017$game_id)
+			   y = regular_season_2017$yCord,
+			   x_adj = regular_season_2017$xCordAdjusted,
+			   y_adj = regular_season_2017$yCordAdjusted,
+			   angle = regular_season_2017$shotAngle,
+			   angle_adj = regular_season_2017$shotAngleAdjusted,
+			   goal = regular_season_2017$goal,
+			   goalie_id = regular_season_2017$goalieIdForShot,
+			   goalie_name = regular_season_2017$goalieNameForShot,
+			   skater_id = regular_season_2017$shooterPlayerId,
+			   skater_name = regular_season_2017$shooterName,
+			   pos = regular_season_2017$playerPositionThatDidEvent,
+			   game = regular_season_2017$game_id)
 ```
 
 With this `analysis_2017` dataframe, we can start looking at a proposed statistic: shots per goal.
@@ -361,10 +361,7 @@ Fleury's trend seems to be more stable, unlike Holtby. However, Fleury had 5 shu
 A final player I'd like to look at is Carey Price. Price is supposed to be a Vezina caliber goaltender every year. However, injuries have set him back. Let's see how his trend is for the 2017-2018 season.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(price_spg_games,
-					 "#AF1E2D",
-					 "#192168",
-					 "Carey Price")
+plot = plot_spg_game(price_spg_games, "#AF1E2D", "#192168", "Carey Price")
 plot
 ```
 
@@ -387,19 +384,15 @@ So, without further ado, let's start by writing a few subsetting functions to he
 
 ```{r}
 get_low_danger = function(data) {
-	subset(data,
-		   x_adj >= 20 & x_adj <= 35 & y_adj <= 43 & y_adj >= -43)
+	subset(data, x_adj >= 20 & x_adj <= 35 & y_adj <= 43 & y_adj >= -43)
 }
 
 get_medium_danger = function(data) {
-	subset(data,
-		   x_adj >= 32 & x_adj <= 82 &
-		   	((y_adj >= 7 & y_adj <= 43) | (y_adj <= -7 & y_adj >= -43)))
+	subset(data, x_adj >= 32 & x_adj <= 82 & ((y_adj >= 7 & y_adj <= 43) | (y_adj <= -7 & y_adj >= -43)))
 }
 
 get_high_danger = function(data) {
-	subset(data,
-		   x_adj >= 40 & x <= 90 & y_adj >= -22 & y_adj <= 22)
+	subset(data, x_adj >= 40 & x <= 90 & y_adj >= -22 & y_adj <= 22)
 }
 ```
 
@@ -619,19 +612,18 @@ Let's start with simply loading in the data. We already have the 2017-2018 data,
 data_2016 = read.csv("data/2016.csv")
 regular_season_2016 = subset(data_2016, isPlayoffGame == 0)
 analysis_2016 = data.frame(x = regular_season_2016$xCord,
-						   y = regular_season_2016$yCord,
-						   x_adj = regular_season_2016$xCordAdjusted,
-						   y_adj = regular_season_2016$yCordAdjusted,
-						   angle = regular_season_2016$shotAngle,
-						   angle_adj = regular_season_2016$shotAngleAdjusted,
-						   goal = regular_season_2016$goal,
-						   goalie_id = regular_season_2016$goalieIdForShot,
-						   goalie_name =
-						   	regular_season_2016$goalieNameForShot,
-						   skater_id = regular_season_2016$shooterPlayerId,
-						   skater_name = regular_season_2016$shooterName,
-						   pos = regular_season_2016$playerPositionThatDidEvent,
-						   game = regular_season_2016$game_id)
+			   y = regular_season_2016$yCord,
+			   x_adj = regular_season_2016$xCordAdjusted,
+			   y_adj = regular_season_2016$yCordAdjusted,
+			   angle = regular_season_2016$shotAngle,
+			   angle_adj = regular_season_2016$shotAngleAdjusted,
+			   goal = regular_season_2016$goal,
+			   goalie_id = regular_season_2016$goalieIdForShot,
+			   goalie_name = regular_season_2016$goalieNameForShot,
+			   skater_id = regular_season_2016$shooterPlayerId,
+			   skater_name = regular_season_2016$shooterName,
+			   pos = regular_season_2016$playerPositionThatDidEvent,
+			   game = regular_season_2016$game_id)
 
 murray_2016 = get_goalie_data(analysis_2016, "Matt Murray")
 murray_2017 = get_goalie_data(analysis_2017, "Matt Murray")
@@ -667,10 +659,7 @@ From this, we can see that Murray has always been strong against low danger shot
 Let's now take a look at his trends for each game he played for both season. First, we'll look at 2016-2017.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(murray_spg_games_2016,
-					 "#000000",
-					 "#FCB514",
-					 "Matt Murray (2016)")
+plot = plot_spg_game(murray_spg_games_2016, "#000000", "#FCB514", "Matt Murray (2016)")
 plot
 ```
 
@@ -679,10 +668,7 @@ We can see that Murray followed most trends that other goalies did: a decreasing
 Let's now take a look at 2017-2018.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(murray_spg_games_2017,
-					 "#000000",
-					 "#FCB514",
-					 "Matt Murray (2017)")
+plot = plot_spg_game(murray_spg_games_2017, "#000000", "#FCB514", "Matt Murray (2017)")
 plot
 ```
 
@@ -739,10 +725,7 @@ This 2018-2019 season has been an interesting one for Murray. With a steep decli
 Let's take a look at his trend now.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(murray_spg_games_2018,
-					 "#000000",
-					 "#FCB514",
-					 "Matt Murray (2018)")
+plot = plot_spg_game(murray_spg_games_2018, "#000000", "#FCB514", "Matt Murray (2018)")
 plot
 ```
 
@@ -772,10 +755,7 @@ With this data, we can now take a look at his performance.
 With a SPG of `r desmith_spg_2017`, DeSmith should surely be in conversation as a potential starting goalie for a rebuilding team. Let's see how his trends look like:
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(desmith_spg_games_2017,
-					 "#000000",
-					 "#FCB514",
-					 "Casey DeSmith (2017)")
+plot = plot_spg_game(desmith_spg_games_2017, "#000000", "#FCB514", "Casey DeSmith (2017)")
 plot
 ```
 
@@ -808,10 +788,7 @@ We can see there are some improvement and falters for DeSmith. A major falter fo
 Let's look at his trend for the current season:
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
-plot = plot_spg_game(desmith_spg_games_2018,
-					 "#000000",
-					 "#FCB514",
-					 "Casey DeSmith (2018)")
+plot = plot_spg_game(desmith_spg_games_2018, "#000000", "#FCB514", "Casey DeSmith (2018)")
 plot
 ```
 
