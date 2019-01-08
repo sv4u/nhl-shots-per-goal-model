@@ -32,7 +32,7 @@ Last Update: January 7th, 2019
 
 GitHub Repo: [sv4u/nhl-shots-per-goal-model](https://github.com/sv4u/nhl-shots-per-goal-model)
 
-In the NHL, goalies are arguably one of the most teammembers. Most deep postseason runs rely on consistent goalie play. However, being able to compare goalies tends to be difficult, since consistency is extremely hard for a goalie. Few goalies have been consistent their entire career. Of the modern day goalies, very few exemplify extreme consistency: Henrik Lundqvist, Marc-Andre Fleury, Roberto Luongo and Jonathan Quick to name a few.
+In the NHL, goalies are arguably one of the most important team members. Most deep postseason runs rely on consistent goalie play. However, being able to compare goalies tends to be difficult, since consistency is extremely hard for a goalie. Few goalies have been consistent their entire career. Of the modern day goalies, very few exemplify extreme consistency: Henrik Lundqvist, Marc-Andre Fleury, Roberto Luongo and Jonathan Quick to name a few.
 
 In this document, I'll be detailing an analysis and seeing how it pertains to consistency. The data used has been taken from [MoneyPuck](moneypuck.com).
 
