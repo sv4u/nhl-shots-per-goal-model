@@ -751,14 +751,6 @@ Now, we can compare all the defensemen.
 | Maatta | `r maatta_low_spg` | `r maatta_medium_spg` | `r maatta_high_spg` |
 | Engelland | `r engelland_low_spg` | `r engelland_medium_spg` | `r engelland_high_spg` |
 
-## Positional Aspect
-
-To be done.
-
-## Locational Aspect
-
-To be done.
-
 ## Player Analysis {.tabset .tabset-fade}
 
 ### Matt Murray
